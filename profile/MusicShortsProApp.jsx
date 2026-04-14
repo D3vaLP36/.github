@@ -283,6 +283,30 @@ export default function App() {
     }
   };
 
+  const handleVaultPreview = (item) => {
+    setActiveMode('STUDIO');
+    setSubMode(item.type === 'VEO' ? 'VEO' : 'IMAGE');
+    setPrompt(item.prompt || '');
+    setOutputUrl(item.url || null);
+  };
+
+  const handleVaultDownload = async (item) => {
+    try {
+      const response = await fetch(item.url);
+      if (!response.ok) throw new Error(`Download failed: ${response.status}`);
+      const blob = await response.blob();
+      const extension = item.type === 'VEO' ? 'mp4' : 'jpg';
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `museshorts-${item.type?.toLowerCase() || 'asset'}-${Date.now()}.${extension}`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    } catch (err) {
+      console.error('Vault download error', err);
+      setErrorMessage('Failed to download from vault item.');
+    }
+  };
+
   if (!user) return (
     <div className="h-screen bg-slate-950 flex flex-col items-center justify-center text-white p-12 gap-6">
       <div className="w-16 h-16 bg-blue-600 rounded-2xl animate-pulse flex items-center justify-center font-black text-2xl">G</div>
@@ -492,8 +516,20 @@ export default function App() {
                           <img src={item.url} className="w-full h-full object-cover" alt="Vault" />
                         )}
                         <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4">
-                          <button className="p-4 bg-white rounded-full text-black hover:scale-110 transition-transform" type="button"><Play size={20} /></button>
-                          <button className="text-[10px] font-black uppercase text-white tracking-widest hover:underline" type="button">Download Master</button>
+                          <button
+                            onClick={() => handleVaultPreview(item)}
+                            className="p-4 bg-white rounded-full text-black hover:scale-110 transition-transform"
+                            type="button"
+                          >
+                            <Play size={20} />
+                          </button>
+                          <button
+                            onClick={() => handleVaultDownload(item)}
+                            className="text-[10px] font-black uppercase text-white tracking-widest hover:underline"
+                            type="button"
+                          >
+                            Download Master
+                          </button>
                         </div>
                       </div>
                       <div className="p-6 space-y-3">

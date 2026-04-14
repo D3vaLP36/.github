@@ -75,6 +75,7 @@ export default function Page() {
 5. Trigger low-credit flow and verify pricing modal appears.
 6. Generate output and click **Save Screenshot** in the preview overlay to verify capture/download.
 7. Toggle high-speed mode in `__museshorts_runtime` and verify faster handshake response.
+8. In **Vault**, use **Play** to load item back into Studio preview and **Download Master** to save the asset.
 
 ## 7) Terminal environment check
 
