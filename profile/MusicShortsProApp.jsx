@@ -130,6 +130,7 @@ export default function App() {
   const initialAuthToken = typeof window !== 'undefined' ? window.__initial_auth_token : null;
   const outputVideoRef = useRef(null);
   const outputImageRef = useRef(null);
+  const [isMobileDevice, setIsMobileDevice] = useState(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
 
   // --- AUTH INITIALIZATION ---
   useEffect(() => {
@@ -149,6 +150,14 @@ export default function App() {
     initAuth();
     return onAuthStateChanged(auth, setUser);
   }, [initialAuthToken]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const onResize = () => setIsMobileDevice(window.innerWidth < 768);
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   // --- DATA SYNC ---
   useEffect(() => {
@@ -315,7 +324,7 @@ export default function App() {
   );
 
   return (
-    <div className="flex h-screen bg-[#000B1A] text-slate-200 overflow-hidden font-sans selection:bg-blue-600">
+    <div className={`flex h-screen bg-[#000B1A] text-slate-200 overflow-hidden font-sans selection:bg-blue-600 ${isMobileDevice ? 'text-[14px]' : 'text-[16px]'}`}>
       <PricingModal
         isOpen={showPricing}
         onClose={() => setShowPricing(false)}
@@ -328,7 +337,7 @@ export default function App() {
           <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-violet-600 rounded-2xl flex items-center justify-center text-white flex-shrink-0 shadow-xl">
             <Video size={24} strokeWidth={2.5} />
           </div>
-          {isSidebarOpen && <span className="font-black text-2xl text-white tracking-tighter italic uppercase">MUS!CSHORTS</span>}
+          {isSidebarOpen && <span className="font-black text-xl md:text-2xl text-white tracking-tighter italic uppercase">MUS!CSHORTS</span>}
         </div>
 
         <div className="p-8">
@@ -437,12 +446,12 @@ export default function App() {
                     <button
                       onClick={() => handleAction(subMode === 'VEO' ? 5 : 1, subMode)}
                       disabled={isGenerating || !prompt}
-                      className="w-full py-7 rounded-[2.5rem] bg-blue-600 text-white font-black text-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-4 shadow-xl shadow-blue-900/40 disabled:opacity-50 group"
+                      className="w-full py-5 md:py-7 rounded-[2.5rem] bg-blue-600 text-white font-black text-lg md:text-xl hover:bg-blue-500 transition-all flex items-center justify-center gap-4 shadow-xl shadow-blue-900/40 disabled:opacity-50 group"
                       type="button"
                     >
                       {isGenerating ? <RefreshCw className="animate-spin" /> : (
                         <>
-                          <span className="uppercase italic tracking-tighter">Initialize {subMode}</span>
+                          <span className="uppercase italic tracking-tighter text-sm md:text-base">Initialize {subMode}</span>
                           <div className="bg-black/20 px-4 py-1.5 rounded-full text-[10px] font-bold group-hover:bg-black/40 transition-all">
                             {subMode === 'VEO' ? '5 CR' : '1 CR'}
                           </div>
@@ -466,7 +475,7 @@ export default function App() {
                     ) : (
                       <div className="text-center opacity-10 space-y-8 group-hover:opacity-20 transition-opacity">
                         <Sparkles size={120} className="mx-auto" />
-                        <p className="text-3xl font-black italic uppercase tracking-tighter">Output Monitor</p>
+                        <p className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter">Output Monitor</p>
                       </div>
                     )}
                     <div className="absolute top-8 left-8 flex items-center gap-3">
@@ -556,7 +565,7 @@ export default function App() {
             {activeMode === 'TRENDS' && (
               <div className="max-w-4xl mx-auto space-y-12 animate-in slide-in-from-right-12 duration-700">
                 <div className="bg-slate-900 border border-white/10 rounded-[3rem] p-12 space-y-8 shadow-2xl">
-                  <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter">Market Intelligence</h3>
+                  <h3 className="text-2xl md:text-3xl font-black text-white italic uppercase tracking-tighter">Market Intelligence</h3>
                   <p className="text-slate-400 font-medium leading-relaxed">Gemini 1.5 Pro (Verizon Perk Tier) is scanning global frequencies for viral content patterns in your niche.</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="p-8 bg-white/5 rounded-[2.5rem] border border-white/5 group hover:border-blue-500/50 transition-all">
@@ -578,6 +587,8 @@ export default function App() {
       </main>
 
       <style>{`
+        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        :root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: 20px; }
