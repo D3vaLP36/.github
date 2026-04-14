@@ -22,7 +22,7 @@ Given your current app state, here is the practical sequence:
 3. **Go**
    - If all flows pass, wire this component into your route/page entrypoint.
    - Set production Firebase config values in your deployment environment.
-   - Add Firestore rules that match `artifacts/{appId}/users/{uid}/...` access patterns.
+   - Apply `profile/FIRESTORE_RULES.example` (or equivalent) so users can access only their own subtree.
    - Enable secure payments (`allowClientSideTopUp: false`) and implement `/api/payments/checkout`.
 
 4. **Music**
@@ -33,6 +33,7 @@ Given your current app state, here is the practical sequence:
 5. **Done**
    - Add basic automated checks (lint/build).
    - Add smoke tests for auth + create vault item.
+   - Run `bash profile/scripts/smoke_check.sh`.
    - Run `bash profile/scripts/terminal_env_check.sh` before release.
    - Ship.
 

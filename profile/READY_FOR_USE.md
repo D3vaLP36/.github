@@ -64,6 +64,7 @@ export default function Page() {
 - Authenticated user can read/write only their own `users/{uid}` subtree.
 - Profile doc can be created if absent.
 - Vault documents can be created and listed.
+- Starter rules are provided in `profile/FIRESTORE_RULES.example`.
 
 ## 6) Smoke test checklist
 
@@ -85,7 +86,17 @@ bash profile/scripts/terminal_env_check.sh
 
 This confirms basic CLI readiness and prints the required runtime globals for deployment.
 
-## 8) Payment endpoint contract (secure mode)
+## 8) Local smoke check
+
+Run:
+
+```bash
+bash profile/scripts/smoke_check.sh
+```
+
+This verifies required files and key component symbols before a manual run.
+
+## 9) Payment endpoint contract (secure mode)
 
 When `allowClientSideTopUp` is `false`, the app calls:
 
