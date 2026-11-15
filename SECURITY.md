@@ -20,4 +20,15 @@ To assist us in understanding and resolving the issue effectively, please provid
 
 Providing this information will facilitate the prompt triaging of your report.
 
+## Reporting Suspected Malicious Content (Scams, Impersonation, or Abuse)
+
+If you encounter suspicious content in issues, discussions, snippets, links, or images (for example, social-engineering prompts, impersonation handles, suspicious payment flows, or misleading branding), please include the following in your report to **security@projectdiscovery.io**:
+
+* Where it appeared (repository URL, issue/PR/discussion link, and timestamp)
+* Exact suspicious text and any linked URLs
+* Any attached media (screenshots/images) that provide context
+* Why it appears malicious or deceptive
+
+Do **not** execute untrusted code, enter credentials, or follow payment instructions from unverified content.
+
 Thank you for your contribution to ensuring the safety of ProjectDiscovery.
